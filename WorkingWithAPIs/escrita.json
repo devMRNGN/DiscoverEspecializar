@@ -1,0 +1,22 @@
+{
+    "nome": "João Marangoni",
+    "cidade": "Mogi-Mirim",
+    "Telefone": "83-43874387",
+    "livros_favoritos": [
+        "neuromancer",
+        "codigo limpo",
+        "essencialismo"
+    ],
+    "hobbies": {
+        "semana": "estudar",
+        "fim_de_semana": {
+            "sabado": "cinema",
+            "domingo": "parque",
+            "outros": [
+                "caminhada",
+                "volei",
+                "netflix"
+            ]
+        }
+    }
+}
