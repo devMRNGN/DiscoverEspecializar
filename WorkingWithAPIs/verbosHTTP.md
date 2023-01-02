@@ -14,8 +14,10 @@
 
 ### PUT
 
-* a API recebe informações para update de um ou mais registros
+* a API recebe informações para update de um ou mais registros <br>
+* Atualiza varios registros ao mesmo tempo
 
 ### PATCH
 
-* a API recebe informações para update de um registro
+* a API recebe informações para update de um registro <br>
+* Atualiza um unico registro
