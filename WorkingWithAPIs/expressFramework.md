@@ -37,3 +37,51 @@ app.route('/').get((req, res) => res.send("hello"));
 app.route('/').get((req, res) => res.send("hello"));
 app.route('/sobre').get((req, res) => res.send("hello sobre"));
 ```
+<br>
+* Middleware <br>
+* Transformando o conteudo recebido pelo post em JSON para que o servidor consiga ler <br>
+
+```
+app.use(express.json())
+```
+<br>
+* Pegando o corpo da requisição e enviando como resposta <br>
+
+```
+app.route("/").post((req, res) => res.send(req.body));
+```
+<br>
+* METODO PUT -> Editando informações <br>
+- Alterando o que tem em author atraves do metodo PUT <br>
+- Dizendo para o req.body pegar apenas o author <br>
+
+```
+let author = "João Marangoni";
+
+app.route("/").get( (req, res) => res.send(author));
+
+app.use(express.json());
+
+app.route('/').put( (req, res) => {
+    author = req.body.author;
+    res.send(author);
+});
+```
+<br>
+* METODO DELETE -> Apagando informações <br>
+- Quando passamos uma variavel pela rota chamamos de "params" <br>
+ex: passando e acessando params <br>
+
+``` 
+app.route('/:identificador').delete((req, res) => {
+    res.send(req.params.identificador);
+});
+``` 
+<br>
+
+* Explicando <br>
+- 0101 foi armazenado na variavel identificador <br>
+- Essa variavel vem dentro da requisição <br>
+- Dentro da requisição ela vem dentro do params <br>
+- Params é todas variaveis que vem dentro da URL <br>
+- Podemos pegar ela atraves do .identificador <br>
