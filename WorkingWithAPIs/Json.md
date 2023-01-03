@@ -7,7 +7,7 @@
 
 ## Como é escrito um JSON?
 
-```
+``` json
     {
         "nome": "João Marangoni",
         "cidade": "Mogi-Mirim",
