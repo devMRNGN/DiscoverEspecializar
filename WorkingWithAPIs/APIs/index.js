@@ -1,12 +1,14 @@
 const express = require('express');
+const axios = require('axios');
+
 
 const app = express();
+app.use(express.json());
 
 app.listen('3000');
 
-app.use(express.json());
-
-app.route("/").post((req, res) => {
-    const {nome, cidade} = req.body;
-    res.send(`Meu nome é ${nome} e minha cidade é ${cidade}`);
+app.route("/").get((req, res) => {
+    axios.get('https://api.github.com/users/devMRNGN')
+    .then(result => res.send(`<img scr="${result.data.avatar_url}"/>`))
+    .catch(error => console.error(error));
 });
