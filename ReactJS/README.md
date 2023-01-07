@@ -35,3 +35,140 @@ npm install
 }
 * Colocando no main ele será replicado para toda a aplicação
 * Se voce colocar um arquivo por exemplo home.jsx, numa pasta chamada home e renomealo para index.jsx, automaticamente voce estará chamando ele, pq quando vc não identifica no import o arquivo, ele chama o index.jsx por padrão
+
+## Componentes
+
+* Crie uma pasta componentes para ajudar na organização
+* Dentro da mesma crie outra pasta para cada componente que irá conter um index.jsx e um styles.css para o msm
+* importe para o index.jsx o styles css 
+``` jsx
+import './styles.css';
+```
+* Após isso crie seu componente e seu retorno e use export para envia-lo para o arquivo principal
+``` jsx
+export function Card() {
+    return (
+        <div>
+            <strong>João Marangoni</strong>
+            <small>08:48:10</small>
+        </div>
+    )
+};
+
+export default Card;
+```
+* Já no arquivo principal voce irá importar esse arquivo que foi exportado
+``` jsx
+import {Card} from '../../componentes/card/index'
+```
+* E para utiliza-lo dentro do seu conteudo da pagina princpal consiste apenas em chama-lo dentro do retorno html da função
+``` jsx
+<Card />
+```
+* A facilidade dos componentes é que eles podem ser utilizado quantas vezes voce quiser
+
+## Propriedades
+
+* Sempre que utilizamos chaves dentro de uma função jsx é porque vamos utilizar alguma variavel
+* Voce passa a propriedade para uma função atravez da chamada da função
+``` jsx
+<Card name="João" time="08:48:10"/>
+<Card name="Rodrigo" time="09:06:05"/>
+```
+* Para voce utilizar dentro da sua função essas propriedades, basta passar como parametro para a função o "props"
+* props significa propriedades, e ja é pré criado para isso, tudo que voce passar como propriedade será armazenado no props
+``` jsx
+export function Card(props) {
+    return (
+        <div className='card'>
+            <strong>{props.name}</strong>
+            <small>{props.time}</small>
+        </div>
+    )
+};
+```
+* Após passar props como parametro, É desse modo voce acessará as propriedades do props
+``` jsx
+{props.name}
+{props.time}
+{props.nomedoatributo}
+```
+* Também podemos desestruturar o props, fazendo com que voce acesse propriedades especificaas sem muita dificuldade
+``` jsx
+export function Card({name, time}) {
+    return (
+        <strong>{name}<strong/>
+        <small>{time}<small/>
+    )
+}
+```
+
+## Armazenar e recuperar valores do "ESTADO"
+
+* Enviando para a função um argumento do html
+``` jsx
+<input type="text" placeholder="digite seu nome..."onChange={e => handleNameChange(e.target.value)}/>
+```
+* Toda vez que o conteudo mudar (onChange), vou passar uma arrow function, recebendo um evento, e chamando uma função passando o valor do input como argumento pra função
+* Voce precisa utilizar estado, para que uma varavel comum consiga refletir na sua renderização/conteudo
+* Para utilizar o estado fazemos os seguintes passos
+* passo 1: importando
+``` jsx
+import React, {useState} from 'react';
+```
+* passo 2: utilizando
+* Na utilização sempre passamos duas coisas no vetor, primeiro passamos a variavel e segundo passamos a função que atualiza esse estado, normalmente como nome da função, chamamos "set"+"nomevariavel" exemplo abaixo:
+``` jsx
+const [studentName, setStudentName] = useState();
+const [clientName, setClientName] = useState();
+```
+
+* Utilização completa do uso estado
+``` jsx
+export function Home() {
+  
+  const [studentName, setStudentName] = useState();
+
+  return (
+    <div className='container'>
+      <h1>Nome: {studentName}</h1>
+
+      <input type="text" 
+      placeholder="digite seu nome..."
+      onChange={e => setStudentName(e.target.value)}
+      />
+
+      <button type="button">Adicionar</button>
+      <Card name="João Marangoni" time="08:48:10" />
+      <Card name="Rodrigo Pessego" time="09:06:50" />
+      <Card name="Mayra Barbosa" time="09:13:25" />
+    </div>
+  );
+}
+```
+* Estamos passando para o input que toda vez que ele mudar [onChange] ele irá passar para função setStudentName, que é a função que criamos para o useState, atualizar a variavel studentName para o novo valor, que é passado no [e.target.value]
+* Estado é importante quando voce for utilizar valores, e o conteudo do valor for atualizar em tempo real o seu conteudo
+* Inclusive podemos já passar para o estado, um valor inicial padrão que ele irá começar utilizando até que passe outro para atualizar, para fazer isso siga o exemplo:
+``` jsx
+const [studentName, setStudentName] = useState('Amanda Rodrigues');
+```
+* Estou dizendo para o useState, que seu valor inicial será ['Amanda Rodrigues']
+
+## Imutabilidade
+
+* Príncipio que os estados do react respeitam
+* O conteudo ele não deve ser alterado mas sim substituido, pois é muito mais performatico
+* Recuperar o estado antigo e adicionar junto com o novo estado que acabou de chegar
+* Fazemos isso atraves do prevState => estado anterior
+``` jsx 
+setStudents(prevState => [...prevState, newStudent]);
+```
+* Tenho todo conteudo do estado anterior e concatenando com o novo estado que chegou
+* Utilizamos os tres pontos para que ele pegue todo o conteudo no vetor prevState, e coloque no novo vetor
+impedindo que aconteça coisas como:
+``` jsx
+setStudents(prevState => [prevState, newStudent]);
+const students = [['prevState'], "newStudent"];
+// Com a utilização dos tres pontos fazemos com que ele fique assim:
+const students = ['prevState', 'newStudent'];
+``` 
