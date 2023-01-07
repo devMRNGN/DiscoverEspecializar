@@ -172,3 +172,109 @@ const students = [['prevState'], "newStudent"];
 // Com a utilização dos tres pontos fazemos com que ele fique assim:
 const students = ['prevState', 'newStudent'];
 ``` 
+
+## Key Prop
+
+* Quando geramos varios componentes de forma dinâmica baseado numa estrutura de repetição 
+* Se tentarmos gerar o card com a mesma propriedade de um card já existente anterior     
+* Irá dar erro, pois ele diz que para cada propriedade, nós devemos dar uma unica "key" prop
+* Por isso devemos cuidar e acrescentar uma propriedade especial
+* Essa propriedade é a "Key" e ela é como um ID, fazendo com que cada um tenha seu único e isso diferencie um do outro apesar de outras propriedades serem iguais
+``` jsx
+students.map(student => <Card key={student.time} name={student.name} time={student.time}/>)
+```
+* Estamos utilizando time, pq ele é bem especifico, fazendo com que sirva para Key, pois o tempo nunca será igual ja que estamos considerando segundos
+* Exemplo de uma implementação que eu fiz, criando um ID para cada um
+``` jsx
+// Criei uma função que gera um numero aleatorio
+  function createId() {
+    const newId =  Math.floor((Math.random() * 1000) - (Math.random() * 100));
+    return newId;
+  }
+// Passei essa função como valor para a propriedade "key" do objeto newStudent
+const newStudent = {
+        key: createId(),
+        name: studentName,
+        time: new Date().toLocaleTimeString("pt-br", {
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit'
+        })
+      }
+// E passei ela pro map que renderiza os Cards de students
+{students.map(student => <Card key={student.key} name={student.name} time={student.time}/>)}
+```
+* Com isso podemos tranquilamente adicionar quantos estudantes quisermos, independente de nomes repetidos e etc
+* Pois para cada student, estamos gerando um ID unico
+
+## Hooks
+
+* Um hook geralmente tem um padrão para utilização, normalmente é assim:
+``` jsx
+import React, { useState, useEffect } from 'react';
+// Nesse exemplo estou importando dois tipos de Hooks do react ao msm tempo
+```
+* Hooks são funções que permitem voce ligar e conectar os recursos de estado e ciclo de vida do react apartir de componentes totalmente funcionais
+* Foram criados para podermos utilizar funções de formas mais simples, independentes e flexivieis
+* Sempre favorecendo o paradgma funcional, aonde diz que tudo é FUNÇÃO!
+
+#### Hook useEffect
+
+* Importando
+``` jsx
+import React, {useEffect} from 'react';
+```
+
+* Forma de utilização
+``` jsx
+useEffect(() => {
+    // Corpo do useEffect
+    // Ações que eu quero que ele execute
+  }, []); // Esse Array serve para colocar quais são os estados que o nosso useEffect depende
+  // Quando nós criamos e deixamos o array vazio, isso significa que o useEffect irá ser executado apenas uma vez, agora se colocarmos um estado no array de dependencias, toda vez que esse estado acontecer o useEffect irá ser executado também
+```
+* O useEffect ele é executado automaticamente assim que a interface é renderizado, não precisando
+
+#### Consumindo API com useEffect
+
+* Primeiro dentro do useEffect consuma a API
+* Segundo crie um userState que irá armazenar o userEffect
+* Terceiro use o setUser, para alterar o estado sempre que a app for renderizada
+``` jsx
+const [user, setUser] = useState({name: "", avatar: ""});
+
+useEffect(() => {
+    fetch("https://api.github.com/users/devMRNGN")
+    .then(response => response.json())
+    .then(data => {
+        setUser({
+            name: data.name,
+            avatar: data.avatar_url
+        });
+    })
+    .catch(error => console.error(error));
+},[])
+
+    <div>
+        <strong>{user.name}</strong>
+        <img src={user.avatar} alt="Foto de Perfil"/>
+    </div>
+```
+
+#### Consumindo seEffect em API com assync
+
+* Voce precisa criar uma função, ai dentro da função voce cria a async function faz o fetch e dps chama a função dentro do useEffect
+* Pq somente o useEffect não consegue utilizar async function direta
+``` jsx
+useEffect(() => {
+    async function fetchData() {
+      const response = await fetch("https://api.github.com/users/devMRNGN");
+      const data = await response.json();
+      setUser({
+        name: data.name,
+        avatar: data.avatar_url,
+      }) 
+    }
+    fetchData();
+  },[])
+```
