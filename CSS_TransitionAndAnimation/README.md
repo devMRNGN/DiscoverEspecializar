@@ -1,4 +1,4 @@
-# CSS Transições e Animações
+# CSS TRANSITION
 
 * Propriedade que nós usamos quando mudamos de valor alguma coisa
 * permite que a transição seja feita de forma gradual 
@@ -140,3 +140,159 @@ transition-time-function: ease-in-out;
     </body>
 </html>
 ``` 
+
+* Transition Delay
+* Inicia a animação após um tempo determinado
+``` css
+transition-delay: 2s;
+```
+
+* Shortcut do uso da transition
+``` css
+transition: background-color 1s ease 4s; /* Property, duration, timing function e delay */
+```
+* Animação estilingue
+``` css
+transition: all 1s cubic-bezier(.29, 1.01, 1, -0.68);
+```
+* Transition: all; -> independentemente do tipo da mudança ele autua, se voce alterar o tamanho, qnd ele for voltar pra forma original, ele voltara "all" tudo que foi alterado para original
+``` css
+transition: all 1s linear 0s;
+```
+* Opacity: 0 -> animação transparente
+``` css
+opacity: 0;
+transition: opacity 1s linear 0s;
+```
+
+# CSS ANIMATION
+
+* Algo que se anima ou recebe alterações sem a necessidade da interação do usuário diferente do transition
+* Uma animação é executada assim que voce carrega a página, logo depois de executa-lá os objetos voltam as suas propriedades padrões
+* Trabalha com uma propriedade chamada **keyframes**
+* Em uma keyframe voce sempre inicia com o @keyframes e logo em seguida vem o nome que voce dará para sua animação
+* Ex criação de uma animação
+``` css
+@keyframes example-one{
+                
+}
+```
+* FROM -> Aonde e como a animação irá começar
+``` css
+@keyframes example_one{
+    from{
+        background-color: blueviolet;
+    }
+}
+```
+* TO -> para onde a animação deve ir
+``` css
+@keyframes example_one{
+    from{
+        background-color: blueviolet;
+    }
+
+    to{
+        background-color: rosybrown;
+    }
+}
+```
+* Para o animation funcionar ele precisa de duas propriedades a **animation-name** e a **animation-duration**
+
+* Após criar uma animação voce precisa chama-lá no objeto que receberá essa animação
+``` css
+.ball{ /* Estou dizendo que a classe ball irá receber essa animação "example-one" */
+    width: 100px;
+    height: 100px;
+    border-radius: 100%;
+    background-color: red;
+    position: relative;
+
+    animation-name: example_one; /* chamando a animação pelo seu nome */
+    animation-duration: 4s; /* Irá levar 4s para funcionar do "from" até o "to" */
+}
+```
+
+* animação com porcentagem -> funciona como se fosse um carregamento
+* Depende do tempo de duração que voce colocou, as porcentagens vale de acordo com a duração da animação
+* Utilizando o **position: relative** voce pode alterar a posição do elemento criando uma animação mudando-o de posição
+* **Animation-delay: 2s** -> na hora que eu executar minha pagina ele demorará dois segundos para executar a animação
+* **animaiton-iteration-count: 2;** define quantas vezes uma animação irá acontecer, no caso qnd chegar ao fim ele executará mais uma vez, pois o valor é dois
+* **!IMPORTANT** O delay só funciona na hora de iniciar pela primeira vez a animação no carregamento da página, ou seja para as proximas vezes que ela acontecer com o **animation-iteration-count** ela iniciará diretamente sem o delay
+* **animation-iteration-count: infinite;** Faz com que a animação rode infinitamente!
+* **animation-direction: reverse;** essa propriedade faz com que mude a direção em que a animação acontece, ex: caso voce use o reverse como valor, ao invés da animação começar no 0% até 100%, ela começara do 100% e irá até o 0%;
+* **animation-direction: alternate;** esse valor irá alternar, começará no 0% e irá até o 100%, do 100% irá até o 0% e do 0% irá até o 100% novamente, ou seja ele irá ficar alternando começando do 0 e dps do 100 // **alternate-reverse** Esse começa do 100% e vai até o 0%, dps do 0% ao 100%, dps do 100% ao 0%, mesma coisa do alternate só que ao contrário;
+``` css
+.ball{
+    width: 100px;
+    height: 100px;
+    border-radius: 100%;
+    background-color: red;
+    position: relative;
+
+    animation-name: example-two;
+    animation-duration: 10s;
+    animation-delay: 2s;
+    animation-iteration-count: 2;
+}
+
+@keyframes example-two{
+    0%{
+        background-color: blueviolet;
+        top: 0;
+        left: 0;
+    }
+
+    25%{
+        background-color: rosybrown;
+        left: 600px;
+        top: 0;
+    }
+
+    50%{
+        background-color: blue;
+        left: 600px;
+        top: 600px;
+    }
+
+    75%{
+        background-color: yellow;
+        left: 0;
+        top: 600px;
+    }
+
+    100%{
+        background-color: red;
+        left: 0;
+        top: 0;
+    }
+}
+```
+## animation-timing-function
+
+* Funciona exatamente como funcionava no transition porém agora serve pro animation
+* A unica diferença é a do animation msm, de iniciar assim que a página é carregada
+* **Linear** **Ease** **Ease-in** **Ease-out** **Ease-in-out**
+
+## animation-fill-mode
+
+* É utilizado quando voce necessita que a animação comece em um lugar (valor padrão dela)
+* E termine em outro lugar alterando o seu valor padrão para o valor final em que voce deseja que ela pare
+* Esse é o valor forwards -> após termino da animação ele para com as propriedades que estão no "to" ou no "100%"
+``` css
+animation-fill-mode: forwards;
+```
+
+* backwards -> o elemento ele irá manter os valores definidos na primeira chave antes da animação
+* Ou seja, faz com que no periodo que o delay esteja rolando o elemento fique com os elementos do "from" e não de seu valor padrão
+* Porém, logo após a passagem do delay e inicio da animação ele retorna ao seu valor padrão ou ao proximo valor de acordo com a animação
+``` css
+animation-fill-mode: backwards;
+```
+
+* both -> funciona como os dois modos acima juntos, o bakcwards e o forwards
+* Ou seja, quando começa a animação e está no delay o elemento tem as propriedades do "from" ou do "0%"
+* Porém quando passa o delay e ela inicia, ela passa para as propriedades do "to" ou do "100%" e permanece com elas após a animação
+``` css
+animation-fill-mode: bpth;
+```
