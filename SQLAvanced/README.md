@@ -228,6 +228,54 @@ HAVING count(funcionarios.id_departamento) >= 2
 
 ## CREATE TABLE
 
+* Serve para criarmos as tabelas do nosso banco
+* Criar um arquivo com a extensão **".sqlite"**
+* **CREATE TABLE** -> criar tabela
+* Exemplo abaixo, estamos criando uma tabela chamada alunos e dentro dela possuirá os campos, matricula, nome, cpf e responsavel
+* na frente de cada nome do campo, colocamos o tipo dele ex: integet, text e etc
+* Precisamos informar a PRIMARY KEY da tabela
+* **AUTOINCREMENT** Comando passado normalmente na PRIMARY KEY, para que o próprio banco de dados coloque o número da matricula automaticamente, pois como é um id, seria complicado ficar toda vez colocando ele
+* Após isso basta dar run na seleção que o banco criará a tabela
+
+* Criando tabela alunos
+``` SQL
+CREATE TABLE aluno (matricula INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT, cpf INTEGER UNIQUE, responsavel TEXT)
+```
+* Criando tabela professores
+``` SQL
+CREATE TABLE professore (id_professor INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT, cpf INTEGER UNIQUE, materia TEXT)
+```
+* Criando tabela que relaciona alunos e professores pelas matérias
+* O comando REFERENCES serve para referenciar de qual tabela a FOREING KEY está sendo adquirida, após ele se passa o nome da tabela e dentro dele como função se passa o nome do campo que será foreing key
+``` SQL
+CREATE TABLE aulas(id_professor INTEGER, 
+matricula INTEGER, 
+FOREING KEY(id_professor) REFERENCES professore(id_professor), 
+FOREING KEY(matricula) REFERENCES aluno(matricula))
+```
+
 ## ALTER TABLE
 
+* Comando utilizado para alterar dados em uma tabela
+* Exemplo abaixo, alterar o nome da tabela de aluno para alunos
+* **Alterar tabela aluno renomear para alunos**
+``` SQL
+ALTER TABLE aluno RENAME TO alunos
+ALTER TABLE professor RENAME TO professores
+```
+* Alterar nome de campo
+* **Alterar a tabela aulas, renomar coluna id_aluno para matricula_aluno**
+``` SQL
+ALTER TABLE aulas RENAME COLUMN id_aluno TO matricula_aluno
+```
+
 ## DROP TABLE
+
+* Ele apaga uma tabela inteira
+* Esse comando é um comando perigoso pois ele apaga tabela inteira e não há modo de recuperar
+* Exemplo abaixo, estou apagando a tabela alunos, professores e aulas
+``` SQL
+DROP TABLE alunos
+DROP TABLE professores
+DROP TABLE aulas
+```
