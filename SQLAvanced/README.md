@@ -159,13 +159,70 @@ SELECT * FROM aluno LIMIT 2
 
 ## OFFSET
 
+* Serve para dizer para o banco de dados quantos registros ele irá ignorar
+* Ou seja, com limit irá trazer os próximos 4 (1,2,3,4)
+* Porém como usamos o OFFSET 2, ele irá trazer (3,4,5,6)
+* Assim ignoradno os primeiros dois registros
+
+``` SQL
+SELECT * FROM funcionarios
+LIMIT 4 OFFSET 2
+```
 ## COUNT
+
+* Count serve para voce saber quantos registros possuem em uma tabela
+* **IMPORTANTE** o count conta apartir de algum campo, ou seja caso a pessoa não possua esse campo ela será ignorada
+* Count só aceita um campo para contar
+
+``` SQL
+SELECT COUNT(nome) FROM funcionarios
+```
+* Contar quantos funcionarios possuem o campo nome
 
 ## GROUP BY
 
+* diferente do count, o GROUP BY vai agrupar dados semelhantes
+* temos que passar para ele qual campo que ele deve usar de referência
+* Como resultado ele mostrará quantos registros possuem dentro do departamento
+* A devolução dele, é uma contagem igual COUNT
+
+``` SQL
+SELECT id_departamento, COUNT(id_departamento) 
+FROM funcionarios
+GROUP BY id_departamento
+```
+
 ## JOIN, GROUP BY e COUNT juntos
 
+* Irá mostrar descricao do departamento, o count de quantos funcionarios tem em cada departamento
+* Buscando da tabela funcionarios (FROM)
+* Fazendo JOIN na tabela departamentos
+* O relacionamento do id_departamento
+* E estamos pedindo pra agrupar os resultados pelo id_dept
+
+``` SQL
+SELECT departamentos.descricao COUNT(funcionarios.id_departamento) 
+FROM funcionarios
+JOIN departamentos 
+ON funcinarios.id_departamento = departamentos.id_dept
+GROUP BY departamentos.id_dept
+```
+
 ## HAVING
+
+* O HAVING serve como um WHERE porém conseguindo fazer com campos agrupados
+* Pois o WHERE, não consegue funcionar quando se tenta em campos agrupados, apenas em capos normais,
+* Sempre que quiser fazer alguma coisa com um campo agrupado é utilizado o **HAVING**
+* Voce consegue utilizar nele todos os operadores lógicos
+
+``` SQL
+SELECT departamentos.descricao, count(funcionarios.id_departamento) 
+FROM funcionarios
+JOIN departamentos
+ON funcionarios.id_departamento = departamentos.id_dept
+GROUP BY departamento.id_dept
+HAVING count(funcionarios.id_departamento) >= 2
+```
 
 # COMANDOS NAS TABELAS
 
